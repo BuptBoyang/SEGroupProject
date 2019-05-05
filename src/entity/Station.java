@@ -4,11 +4,23 @@ import javax.swing.*;;
 
 public class Station {
 	private Slot slot[];
+	private final int slotAmount = 8;
 	private JPanel stationPanel;
 	User currentUser;
 	
 	public int findFreeSlot() {
-		int slotNo=0;
+		int slotNo = -1;
+		boolean target = false;
+		if(currentUser.getStatus()==0)
+			target = true;
+		else if(currentUser.getStatus()==1)
+			target = false;
+		for(int i=0;i<slotAmount;i++) {
+			if(slot[i].isHasScooter()==target) {
+				slotNo = i;
+				break;
+			}
+		}
 		return slotNo;
 	}
 	
@@ -18,6 +30,11 @@ public class Station {
 	
 	public void checkUserState() {
 		
+	}
+	public void showSlotPosition() {
+		JLabel pos = new JLabel();
+		int slotNo = findFreeSlot();
+		pos.setText(slotNo + " is able to use");
 	}
 	
 	public void checkToBorrow() {
