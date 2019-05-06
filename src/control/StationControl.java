@@ -6,7 +6,6 @@ import entity.User;
 
 public class StationControl {
 	private ArrayList<Station> stations = new ArrayList<Station>();
-	private ArrayList<User> users=new ArrayList<User>();
 	
 	public User checkUserId(String id) {
 		User u=null;
