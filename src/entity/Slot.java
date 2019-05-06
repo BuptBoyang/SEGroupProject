@@ -1,6 +1,8 @@
 package entity;
 
 import javax.swing.*;
+
+import java.awt.Color;
 import java.awt.event.*;
 
 public class Slot {
@@ -9,6 +11,15 @@ public class Slot {
 	private JLabel light;
 	private JButton button;
 	boolean success;//是否成功关锁，在actionPerform里置为true
+	
+	public Slot(boolean hasScooter,int index) {
+		this.hasScooter = hasScooter;
+		this.isLocked = true;
+		this.light = new JLabel();
+		this.button = new JButton(""+index);
+		light.setOpaque(true);
+		light.setBackground(Color.WHITE);
+	}
 	
 	public boolean open() {
 		this.success=false;
