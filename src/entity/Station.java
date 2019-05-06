@@ -8,6 +8,17 @@ public class Station {
 	private JPanel stationPanel;
 	User currentUser;
 	
+	public Station() {
+		this.slot = new Slot[slotAmount];
+		for(int i=0;i<slotAmount;i++) {
+			if(i<slotAmount/2) {
+				slot[i] = new Slot(true,i);
+			} else {
+				slot[i] = new Slot(false,i);
+			}
+		}
+	}
+	
 	public int findFreeSlot() {
 		int slotNo = -1;
 		boolean target = false;
