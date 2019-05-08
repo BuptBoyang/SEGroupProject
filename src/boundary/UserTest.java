@@ -1,7 +1,5 @@
 package boundary;
 
-import java.util.Scanner;
-
 import control.StationControl;
 import control.UserControl;
 import entity.User;
@@ -29,9 +27,6 @@ public class UserTest {
 		name[2] = new String("zhaodong");
 		name[3] = new String("liuxian");
 		name[4] = new String("qianxin");
-
-		UserControl userControl = new UserControl();
-		StationControl stationControl = new StationControl();
 		
 		for (int i = 0; i < 5; i++) {
 			User user = new User(id[i], name[i] ,email[i]);
@@ -39,7 +34,7 @@ public class UserTest {
 			ir = UserControl.isIDLegal(id[i]);
 			dup = UserControl.isDuplication(id[i]);
 			if (er == true && ir == true && dup == true) {
-				userControl.register(user);
+				UserControl.register(user);
 				System.out.println(i+"the user has been registered.");
 			}
 			if (er == false) {
