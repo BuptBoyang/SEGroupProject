@@ -93,7 +93,7 @@ public class Station {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
-				if(slot[slotNo].success==false) {
+				if(slot[slotNo].success==false && slot[slotNo].isLocked()==false) {
 					System.out.println("Timeout");
 					slot[slotNo].setLocked(true);
 					isTimeout = true;
