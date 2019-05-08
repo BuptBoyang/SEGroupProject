@@ -15,12 +15,7 @@ import entity.User;
 
 public class UserControl {
 
-	public static ArrayList<User> userArrayList;
-
-	public UserControl() {
-		userArrayList = new ArrayList<User>();
-		read();
-	}
+	public static ArrayList<User> userArrayList = new ArrayList<User>();
 
 	public static boolean isIDLegal(String studentID) {
 		if (studentID.length() == 9) {
@@ -57,12 +52,12 @@ public class UserControl {
 		return true;
 	}
 
-	public void register(User user) {
+	public static void register(User user) {
 		userArrayList.add(user);
 		System.out.println(user);
 	}
 
-	public void read() {
+	public static void read() {
 		try {
 			BufferedReader reader = new BufferedReader(new FileReader("D:\\userList.csv"));
 			reader.readLine();
@@ -79,7 +74,7 @@ public class UserControl {
 
 	}
 
-	public void write() {
+	public static void write() {
 		try {
 			File csv = new File("D:\\userList.csv");
 
@@ -106,14 +101,21 @@ public class UserControl {
 		return 0;
 	}
 
-	public static void takeScooter(String studentID) {
+	public static void startUsing(String studentID) {
 		int i = searchID(studentID);
 		Calendar cld = Calendar.getInstance();
 		userArrayList.get(i).setStatus(1);//1 means using now
 		userArrayList.get(i).setCld(cld);
 	}
 	
-	public int[] usingTime(String studentID) {
+	public static void endUsing(String studentID) {
+		int[] time = usingTime(studentID);
+		if(time[0]>30 || time[1]>120) {
+			ban(studentID);
+		}
+	}
+	
+	public static int[] usingTime(String studentID) {
 		int i=searchID(studentID);
 		int[] time=new int[2];
 		Calendar now=Calendar.getInstance();
@@ -132,7 +134,7 @@ public class UserControl {
 		return time;
 	}
 	
-	public void ban(String studentID) {
+	public static void ban(String studentID) {
 		int i=searchID(studentID);
 		if(i>=0) {
 			userArrayList.get(i).setFine(true);
@@ -157,7 +159,7 @@ public class UserControl {
 	}
 	
 	
-	public void unBan(String studentID) {
+	public static void unBan(String studentID) {
 		int i=searchID(studentID);
 		if(i>=0) {
 			userArrayList.get(i).setFine(false);
