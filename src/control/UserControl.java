@@ -15,14 +15,14 @@ import entity.User;
 
 public class UserControl {
 
-	private ArrayList<User> userArrayList;
+	public static ArrayList<User> userArrayList;
 
 	public UserControl() {
 		userArrayList = new ArrayList<User>();
 		read();
 	}
 
-	public boolean isIDLegal(String studentID) {
+	public static boolean isIDLegal(String studentID) {
 		if (studentID.length() == 9) {
 			try {
 				Integer.valueOf(studentID);
@@ -38,7 +38,7 @@ public class UserControl {
 		 */
 	}
 
-	public boolean isEmailLegal(String email) {
+	public static boolean isEmailLegal(String email) {
 		// email address must in the form of xxx@xxx.xxx,
 		// "[a-z0-9A-Z]+(.[a-z0-9A-z]{1,})?@[a-z0-9A-Z]+(.[a-z0-9A-z]{1,})?"
 		String REGEX = "^([a-z0-9A-Z]+[-|\\.]?)+[a-z0-9A-Z]@([a-z0-9A-Z]+(-[a-z0-9A-Z]+)?\\.)+[a-zA-Z]{2,}$";
@@ -47,7 +47,7 @@ public class UserControl {
 		return matcher.matches();
 	}
 
-	public boolean isDuplication(String id) {
+	public static boolean isDuplication(String id) {
 		for (int i = 0; i < userArrayList.size(); i++) {
 
 			if (userArrayList.get(i).getStudentID().equals(id)) {
@@ -97,7 +97,7 @@ public class UserControl {
 		}
 	}
 
-	public int searchID(String studentID) {
+	public static int searchID(String studentID) {
 		for (int i = 0; i < userArrayList.size(); i++) {
 			if (userArrayList.get(i).getStudentID() == studentID) {
 				return i;
@@ -106,13 +106,13 @@ public class UserControl {
 		return 0;
 	}
 
-	public void takeScooter(String studentID) {
+	public static void takeScooter(String studentID) {
 		int i = searchID(studentID);
 		Calendar cld = Calendar.getInstance();
 		userArrayList.get(i).setStatus(1);//1 means using now
 		userArrayList.get(i).setCld(cld);
 	}
-
+	
 	public int[] usingTime(String studentID) {
 		int i=searchID(studentID);
 		int[] time=new int[2];
@@ -140,13 +140,22 @@ public class UserControl {
 			System.out.println("something wrong");
 	}
 	
-	public boolean usingStatus(String studentID) {
+	public static boolean isCurrentUsing(String studentID) {
 		int i= searchID(studentID);
 		if (userArrayList.get(i).getStatus()==1) {
 			return true;
 		}else
-			return false;	
+			return false;
 	}
+	
+	public static boolean isAbleToBorrow(String studentID) {
+		int i= searchID(studentID);
+		if (userArrayList.get(i).getStatus()==2 && userArrayList.get(i).isFine()==false) {
+			return true;
+		}else
+			return false;
+	}
+	
 	
 	public void unBan(String studentID) {
 		int i=searchID(studentID);
