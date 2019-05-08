@@ -1,7 +1,5 @@
 package entity;
 
-import java.util.Scanner;
-
 import javax.swing.*;
 
 public class Station {
