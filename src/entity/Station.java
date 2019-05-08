@@ -1,13 +1,16 @@
 package entity;
 
-import javax.swing.*;;
+import java.util.Scanner;
+
+import javax.swing.*;
 
 public class Station {
 	private Slot slot[];
 	private final int slotAmount = 8;
 	private JPanel stationPanel;
-	User currentUser;
-	
+	private boolean isTimeout = false;
+
+
 	public Station() {
 		this.slot = new Slot[slotAmount];
 		for(int i=0;i<slotAmount;i++) {
@@ -19,13 +22,15 @@ public class Station {
 		}
 	}
 	
-	public int findFreeSlot() {
+	public void pressSimulator(int slotNo) {
+	//	Scanner sc = new Scanner( System.in );
+		//if(sc.next()=="1") {
+			slot[slotNo].success=true;
+	//	}
+	}
+	
+	public int findFreeSlot(boolean target) {
 		int slotNo = -1;
-		boolean target = false;
-		if(currentUser.getStatus()==0)
-			target = true;
-		else if(currentUser.getStatus()==1)
-			target = false;
 		for(int i=0;i<slotAmount;i++) {
 			if(slot[i].isHasScooter()==target) {
 				slotNo = i;
@@ -35,53 +40,73 @@ public class Station {
 		return slotNo;
 	}
 	
-	public void openSlot() {
-		
+	public void openSlot(int slotNo) {
+		slot[slotNo].setLocked(false);
 	}
 	
-	public void checkUserState() {
-		
+	public void closeSlot(int slotNo) {
+		slot[slotNo].setLocked(true);
 	}
-	public void showSlotPosition() {
+
+	public void showSlotPosition(boolean target) {
 		JLabel pos = new JLabel();
-		int slotNo = findFreeSlot();
+		int slotNo = findFreeSlot(target);
 		pos.setText(slotNo + " is able to use");
 	}
 	
-	public void checkToBorrow() {
-		
+	public boolean checkToBorrow(int slotNo) {
+		boolean borrowResult = false;
+		while(isTimeout==false) {
+			if(slot[slotNo].success==true) {
+				borrowResult = true;
+				break;
+			}
+				
+		}
+		return borrowResult;
 	}
 	
 	public boolean checkToReturn(int slotNo) {
 		boolean returnResult = false;
-		if(currentUser.getStatus()==1) {
-			while(slot[slotNo].success==false);
-			if(slot[slotNo].isHasScooter()) {
-				System.out.println("Successfully return a scooter");
+		while(isTimeout==false) {
+			if(slot[slotNo].success==true) {
 				returnResult = true;
-				//calculate usage
-			} else {
-				System.out.println("Unsuccessfully return a scooter");
+				break;
 			}
-		} else {
-			System.out.println("You are not able to return a scooter.");
+				
 		}
 		return returnResult;
 	}
 	
-	public void timeoutUnborrow() {
-		
+	public void reset(int slotNo,boolean hasScooter) {
+		slot[slotNo].success = false;
+		slot[slotNo].setHasScooter(hasScooter);
 	}
 	
-	public void timeoutUnreturn() {
-		
+	public void timeout(int slotNo) {
+		final long time = 60000;
+		Runnable runnable = new Runnable() {
+			public void run() {
+				try {
+					Thread.sleep(time);
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				if(slot[slotNo].success==false) {
+					System.out.println("Timeout");
+					slot[slotNo].setLocked(true);
+					isTimeout = true;
+				}
+			}
+		};
+		Thread thread = new Thread(runnable);
+		thread.start();
 	}
 	
-	public void pickScooter() {
-		
+	public void releaseSlot(int slotNo) {
+		openSlot(slotNo);
+		//slot[slotNo].flashLight();
 	}
 	
-	public void returnScooter() {
-		
-	}
 }
