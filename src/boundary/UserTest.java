@@ -1,10 +1,13 @@
 package boundary;
 
+import java.util.Scanner;
+
+import control.StationControl;
 import control.UserControl;
 import entity.User;
 
 public class UserTest {
-	public static void main(String args[]) {
+	public static void main(String args[]){
 		String email[] = new String[5];
 		String id[] = new String[5];
 		String name[] = new String[5];
@@ -27,15 +30,16 @@ public class UserTest {
 		name[3] = new String("liuxian");
 		name[4] = new String("qianxin");
 
-		UserControl userList = new UserControl();
+		UserControl userControl = new UserControl();
+		StationControl stationControl = new StationControl();
 		
 		for (int i = 0; i < 5; i++) {
 			User user = new User(id[i], name[i] ,email[i]);
-			er = user.isEmailLegal();
-			ir = user.isIDLegal();
-			dup = userList.isDuplication(user.getStudentID());
+			er = UserControl.isEmailLegal(email[i]);
+			ir = UserControl.isIDLegal(id[i]);
+			dup = UserControl.isDuplication(id[i]);
 			if (er == true && ir == true && dup == true) {
-				userList.register(user);
+				userControl.register(user);
 				System.out.println(i+"the user has been registered.");
 			}
 			if (er == false) {
@@ -47,7 +51,16 @@ public class UserTest {
 			if(dup == false)
 				System.out.println(i+"the user has been there");
 		}
-
+		
+		System.out.println("enter id");
+		StationControl.scanCard("161188100",0);
+		try {
+			Thread.sleep(20000);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		StationControl.scanCard("161188100",0);
 	}
 	
 
