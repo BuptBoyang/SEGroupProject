@@ -81,6 +81,7 @@ public class Station {
 	public void reset(int slotNo,boolean hasScooter) {
 		slot[slotNo].success = false;
 		slot[slotNo].setHasScooter(hasScooter);
+		closeSlot(slotNo);
 	}
 	
 	public void timeout(int slotNo) {
