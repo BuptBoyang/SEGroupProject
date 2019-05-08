@@ -4,7 +4,6 @@ package control;
 import entity.Station;
 
 public class StationControl {	
-	private final int stationAmount = 3;
 	private static Station[] stations = {
 			new Station(),
 			new Station(),
@@ -29,10 +28,10 @@ public class StationControl {
 	private static void userReturnScooter(String studentID,int index) {
 		int slotNo = stations[index].findFreeSlot(false);
 		stations[index].releaseSlot(slotNo);
-		stations[index].pressSimulator(slotNo);
+		//stations[index].pressSimulator(slotNo);
 		stations[index].timeout(slotNo);
 		if(stations[index].checkToReturn(slotNo)==true) {
-			UserControl.takeScooter(studentID);
+			//UserControl.returnScooter(studentID);//还车时对用户的操作
 			stations[index].reset(slotNo,true);
 			System.out.println("Return the scooter successfully");
 		} else {
