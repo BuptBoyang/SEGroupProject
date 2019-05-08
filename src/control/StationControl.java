@@ -45,7 +45,7 @@ public class StationControl {
 		stations[index].pressSimulator(slotNo);
 		stations[index].timeout(slotNo);
 		if(stations[index].checkToBorrow(slotNo)==true) {
-			UserControl.takeScooter(studentID);
+			UserControl.startUsing(studentID);
 			stations[index].reset(slotNo,false);
 			System.out.println("Take the scooter successfully");
 		} else {
