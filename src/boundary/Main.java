@@ -12,14 +12,19 @@ public class Main {
 			UserControl.register(user);
 		
 		System.out.println("enter id");
-		StationControl.scanCard("161188955",0);
+		String takeInformation = StationControl.scanCard("161188955",0);
+		System.out.println(takeInformation);
+
 		try {
 			Thread.sleep(20000);
 		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		StationControl.scanCard("161188955",0);
+		
+		String returnInformation = StationControl.scanCard("161188955",0);
+		System.out.println(returnInformation);
+
 	}
 
 }
