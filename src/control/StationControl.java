@@ -10,47 +10,53 @@ public class StationControl {
 			new Station()
 	};
 	
-	public static void scanCard(String studentID,int index) {
-		
+	public static String scanCard(String studentID,int index) {
+		String message = new String();
 		if(UserControl.isCurrentUsing(studentID)==true) {
-			System.out.println("please return");
-			userReturnScooter(studentID,index);
+			message += "please return\n";
+			message += userReturnScooter(studentID,index);
 		} 
 		else if (UserControl.isAbleToBorrow(studentID)==true) {
-			System.out.println("please take");
-			userTakeScooter(studentID,index);
+			message += "please take\n";
+			message += userTakeScooter(studentID,index);
 		}
 		else if(UserControl.isAbleToBorrow(studentID)==false) {
-			System.out.println("Pay your fine in the office before using a scooter");
+			message += "Pay your fine in the office before using a scooter";
 		}
+		
+		return message;
 	}
-	
-	private static void userReturnScooter(String studentID,int index) {
+
+	private static String userReturnScooter(String studentID,int index) {
 		int slotNo = stations[index].findFreeSlot(false);
+		String message = new String();
 		stations[index].releaseSlot(slotNo);
 		//stations[index].pressSimulator(slotNo);
 		stations[index].timeout(slotNo);
 		if(stations[index].checkToReturn(slotNo)==true) {
 			UserControl.endUsing(studentID);
 			stations[index].reset(slotNo,true);
-			System.out.println("Return the scooter successfully");
+			message = "Return the scooter successfully";
 		} else {
-			System.out.println("Retrun the scooter unsuccessfully");
+			message = "Retrun the scooter unsuccessfully";
 		}
+		return message;
 	}
 
-	public static void userTakeScooter(String studentID,int index) {
+	public static String userTakeScooter(String studentID,int index) {
 		int slotNo = stations[index].findFreeSlot(true);
+		String message = new String();
 		stations[index].releaseSlot(slotNo);
 		stations[index].pressSimulator(slotNo);
 		stations[index].timeout(slotNo);
 		if(stations[index].checkToBorrow(slotNo)==true) {
 			UserControl.startUsing(studentID);
 			stations[index].reset(slotNo,false);
-			System.out.println("Take the scooter successfully");
+			message = "Take the scooter successfully";
 		} else {
-			System.out.println("Take the scooter unsuccessfully");
+			message = "Take the scooter unsuccessfully";
 		}
+		return message;
 	}
 	
 }
