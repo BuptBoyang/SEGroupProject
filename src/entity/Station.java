@@ -5,7 +5,7 @@ import javax.swing.*;
 public class Station {
 	private Slot slot[];
 	private final int slotAmount = 8;
-	private JPanel stationPanel;
+	//private JPanel stationPanel;
 	private boolean isTimeout = false;
 
 
