@@ -21,11 +21,6 @@ public class Slot {
 		light.setBackground(Color.WHITE);
 	}
 	
-	public boolean open() {
-		this.success=false;
-		return success;
-	}
-	
 	public boolean isHasScooter() {
 		return hasScooter;
 	}
