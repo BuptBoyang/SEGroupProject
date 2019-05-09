@@ -59,7 +59,6 @@ public class Station {
 				borrowResult = true;
 				break;
 			}
-				
 		}
 		return borrowResult;
 	}
