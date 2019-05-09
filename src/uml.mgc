@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ClassDiagram>
-    <Class name="entity.User" x="194" y="380">
+    <Class name="entity.User" x="132" y="248">
         <AttributesDisplayFilter public-accepted="true"
             private-accepted="true" protected-accepted="true"
             default-accepted="true" static-accepted="false"/>
@@ -9,7 +9,18 @@
             default-accepted="false" static-accepted="false"
             accessors-accepted="false" constructors-accepted="false"/>
     </Class>
-    <Class name="entity.Slot" x="110" y="201">
+    <Class name="boundary.Main" x="298" y="68">
+        <AttributesDisplayFilter public-accepted="true"
+            private-accepted="true" protected-accepted="true"
+            default-accepted="true" static-accepted="false"/>
+        <MethodDisplayFilter public-accepted="true"
+            private-accepted="false" protected-accepted="false"
+            default-accepted="false" static-accepted="false"
+            accessors-accepted="false" constructors-accepted="false"/>
+        <Communication destinationClassName="control.StationControl"/>
+        <Communication destinationClassName="control.UserControl"/>
+    </Class>
+    <Class name="entity.Slot" x="382" y="495">
         <AttributesDisplayFilter public-accepted="true"
             private-accepted="true" protected-accepted="true"
             default-accepted="true" static-accepted="false"/>
@@ -18,7 +29,7 @@
             default-accepted="false" static-accepted="false"
             accessors-accepted="false" constructors-accepted="false"/>
     </Class>
-    <Class name="entity.Station" x="228" y="204">
+    <Class name="entity.Station" x="341" y="217">
         <AttributesDisplayFilter public-accepted="true"
             private-accepted="true" protected-accepted="true"
             default-accepted="true" static-accepted="false"/>
@@ -28,5 +39,31 @@
             accessors-accepted="false" constructors-accepted="false"/>
         <Association destinationClassName="entity.Slot"
             endpointName="slot[]" kind="Simple"/>
+        <Communication destinationClassName="entity.Slot"/>
+    </Class>
+    <Class name="control.StationControl" x="394" y="121">
+        <AttributesDisplayFilter public-accepted="true"
+            private-accepted="true" protected-accepted="true"
+            default-accepted="true" static-accepted="false"/>
+        <MethodDisplayFilter public-accepted="true"
+            private-accepted="false" protected-accepted="false"
+            default-accepted="false" static-accepted="false"
+            accessors-accepted="false" constructors-accepted="false"/>
+        <Association destinationClassName="entity.Station"
+            endpointName="stations" kind="Simple"/>
+        <Communication destinationClassName="entity.Station"/>
+        <Communication destinationClassName="control.UserControl"/>
+    </Class>
+    <Class name="control.UserControl" x="151" y="127">
+        <AttributesDisplayFilter public-accepted="true"
+            private-accepted="true" protected-accepted="true"
+            default-accepted="true" static-accepted="false"/>
+        <MethodDisplayFilter public-accepted="true"
+            private-accepted="false" protected-accepted="false"
+            default-accepted="false" static-accepted="false"
+            accessors-accepted="false" constructors-accepted="false"/>
+        <Association destinationClassName="entity.User"
+            endpointName="userArrayList" kind="Simple"/>
+        <Communication destinationClassName="entity.User"/>
     </Class>
 </ClassDiagram>
