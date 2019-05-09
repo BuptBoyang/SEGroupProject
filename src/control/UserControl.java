@@ -138,6 +138,7 @@ public class UserControl {
 		int i=searchID(studentID);
 		if(i>=0) {
 			userArrayList.get(i).setFine(true);
+			System.out.println("you are fined");
 		}else
 			System.out.println("something wrong");
 	}

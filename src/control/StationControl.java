@@ -31,7 +31,7 @@ public class StationControl {
 		//stations[index].pressSimulator(slotNo);
 		stations[index].timeout(slotNo);
 		if(stations[index].checkToReturn(slotNo)==true) {
-			//UserControl.returnScooter(studentID);//还车时对用户的操作
+			UserControl.endUsing(studentID);
 			stations[index].reset(slotNo,true);
 			System.out.println("Return the scooter successfully");
 		} else {
