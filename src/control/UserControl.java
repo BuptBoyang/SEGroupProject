@@ -26,11 +26,6 @@ public class UserControl {
 			}
 		}
 		return false;
-		// the QM number should be 9 digits;
-		/*
-		 * String REGEX="^\d{9}$"; Pattern p = Pattern.compile(REGEX); Matcher
-		 * matcher=p.matcher(this.studentID); return matcher.matches();
-		 */
 	}
 
 	public static boolean isEmailLegal(String email) {
@@ -46,14 +41,15 @@ public class UserControl {
 		for (int i = 0; i < userArrayList.size(); i++) {
 
 			if (userArrayList.get(i).getStudentID().equals(id)) {
-				return false;
+				return true;
 			}
 		}
-		return true;
+		return false;
 	}
 
 	public static void register(User user) {
 		userArrayList.add(user);
+		UserControl.write(user);
 		System.out.println(user);
 	}
 
@@ -65,7 +61,7 @@ public class UserControl {
 			while ((line = reader.readLine()) != null) {
 				String item[] = line.split(",");
 				User user = new User(item[0], item[1], item[2]);
-				register(user);
+				userArrayList.add(user);
 			}
 			reader.close();
 		} catch (Exception e) {
@@ -74,16 +70,14 @@ public class UserControl {
 
 	}
 
-	public static void write() {
+	public static void write(User user) {
 		try {
 			File csv = new File("D:\\userList.csv");
 
 			BufferedWriter bw = new BufferedWriter(new FileWriter(csv, true));
-			for (int i = 0; i < userArrayList.size(); i++) {
-				bw.write(userArrayList.get(i).getStudentID() + "," + userArrayList.get(i).getName() + ","
-						+ userArrayList.get(i).getEmail());
+				bw.write(user.getStudentID() + "," + user.getName() + ","
+						+ user.getEmail());
 				bw.newLine();
-			}
 			bw.close();
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
