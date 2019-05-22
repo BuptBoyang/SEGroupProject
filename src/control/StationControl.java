@@ -29,9 +29,12 @@ public class StationControl {
 
 	private static String userReturnScooter(String studentID,int index) {
 		int slotNo = stations[index].findFreeSlot(false);
+		if(slotNo==-1) {
+			return "No free slot";
+		}
 		String message = new String();
 		stations[index].releaseSlot(slotNo);
-		//stations[index].pressSimulator(slotNo);
+		stations[index].pressSimulator(slotNo);
 		stations[index].timeout(slotNo);
 		if(stations[index].checkToReturn(slotNo)==true) {
 			UserControl.endUsing(studentID);
@@ -45,6 +48,9 @@ public class StationControl {
 
 	public static String userTakeScooter(String studentID,int index) {
 		int slotNo = stations[index].findFreeSlot(true);
+		if(slotNo==-1) {
+			return "No free slot";
+		}
 		String message = new String();
 		stations[index].releaseSlot(slotNo);
 		stations[index].pressSimulator(slotNo);
