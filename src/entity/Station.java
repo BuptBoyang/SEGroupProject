@@ -60,6 +60,7 @@ public class Station {
 				break;
 			}
 		}
+		isTimeout = false;
 		return borrowResult;
 	}
 	
@@ -70,8 +71,8 @@ public class Station {
 				returnResult = true;
 				break;
 			}
-				
 		}
+		isTimeout = false;
 		return returnResult;
 	}
 	
