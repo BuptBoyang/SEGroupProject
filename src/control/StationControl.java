@@ -41,6 +41,7 @@ public class StationControl {
 			stations[index].reset(slotNo,true);
 			message = "Return the scooter successfully";
 		} else {
+			stations[index].reset(slotNo,false);
 			message = "Retrun the scooter unsuccessfully";
 		}
 		return message;
@@ -60,6 +61,7 @@ public class StationControl {
 			stations[index].reset(slotNo,false);
 			message = "Take the scooter successfully";
 		} else {
+			stations[index].reset(slotNo,true);
 			message = "Take the scooter unsuccessfully";
 		}
 		return message;
