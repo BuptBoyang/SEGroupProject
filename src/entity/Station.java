@@ -8,7 +8,14 @@ public class Station {
 	//private JPanel stationPanel;
 	private boolean isTimeout = false;
 
-
+	public int getSlotAmount() {
+		return slotAmount;
+	}
+	
+	public Slot getSlot(int i) {
+		return slot[i];
+	}
+	
 	public Station() {
 		this.slot = new Slot[slotAmount];
 		for(int i=0;i<slotAmount;i++) {
