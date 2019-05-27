@@ -1,14 +1,77 @@
 
 package control;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+
 import entity.Station;
 
 public class StationControl {	
+
 	private static Station[] stations = {
 			new Station(),
 			new Station(),
 			new Station()
 	};
+	
+	public static void saveStation() {
+		ObjectOutputStream oos = null;  
+        FileOutputStream fos = null;
+		try {
+			File f = new File("station");
+			fos = new FileOutputStream(f);  
+            oos = new ObjectOutputStream(fos);  
+            oos.writeObject(stations);
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {  
+            if (oos != null) {  
+                try {  
+                    oos.close();  
+                } catch (IOException e1) {  
+                    e1.printStackTrace();  
+                }  
+            }  
+            if (fos != null) {  
+                try {  
+                    fos.close();  
+                } catch (IOException e2) {  
+                    e2.printStackTrace();  
+                }  
+            }  
+        }  
+	}
+	
+	public static void read(){
+		FileInputStream fis = null;  
+        ObjectInputStream ois = null; 
+		try {
+			fis = new FileInputStream("station");  
+            ois = new ObjectInputStream(fis);
+            stations =  (Station[]) ois.readObject();  
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {  
+            if (fis != null) {  
+                try {  
+                    fis.close();  
+                } catch (IOException e1) {  
+                    e1.printStackTrace();  
+                }  
+            }  
+            if (ois != null) {  
+                try {  
+                    ois.close();  
+                } catch (IOException e2) {  
+                    e2.printStackTrace();  
+                }  
+            }  
+        }  
+	}
 	
 	public static String scanCard(String studentID,int index) {
 		String message = new String();
@@ -65,6 +128,16 @@ public class StationControl {
 			message = "Take the scooter unsuccessfully";
 		}
 		return message;
+	}
+	
+	public static int scooterNumberInStation(int index) {
+		int amount = 0;
+			for(int i=0;i<stations[index].getSlotAmount();i++) {
+				if(stations[index].getSlot(i).isHasScooter()) {
+					amount++;
+				}
+			}
+		return amount;
 	}
 	
 }
