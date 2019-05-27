@@ -88,7 +88,7 @@ public class UserControl {
 
 	public static int searchID(String studentID) {
 		for (int i = 0; i < userArrayList.size(); i++) {
-			if (userArrayList.get(i).getStudentID() == studentID) {
+			if (userArrayList.get(i).getStudentID().equals(studentID)) {
 				return i;
 			}
 		}
@@ -98,67 +98,81 @@ public class UserControl {
 	public static void startUsing(String studentID) {
 		int i = searchID(studentID);
 		Calendar cld = Calendar.getInstance();
-		userArrayList.get(i).setStatus(1);//1 means using now
+		userArrayList.get(i).setStatus(1);// 1 means using now
 		userArrayList.get(i).setCld(cld);
 	}
-	
+
 	public static void endUsing(String studentID) {
 		int[] time = usingTime(studentID);
-		if(time[0]>30 || time[1]>120) {
+		if (time[0] > 30 || time[1] > 120) {
 			ban(studentID);
+		}
+	}
+
+	public static void writeUsingTime(User user) {
+		try {
+			File csv = new File("C:\\Users\\lvxia\\Desktop\\UsingTime.csv");
+
+			BufferedWriter bw = new BufferedWriter(new FileWriter(csv, true));
+				bw.write(user.getStudentID() + "," + user.getDayUsingTime()[0] + "," + user.getDayUsingTime()[1]);
+				bw.newLine();
+			bw.close();
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
 		}
 	}
 	
 	public static int[] usingTime(String studentID) {
-		int i=searchID(studentID);
-		int[] time=new int[2];
-		Calendar now=Calendar.getInstance();
-		Calendar last=userArrayList.get(i).getCld();
-		int minute=(now.get(Calendar.YEAR)-last.get(Calendar.YEAR))*525600+
-				(now.get(Calendar.DAY_OF_YEAR)-last.get(Calendar.DAY_OF_YEAR));
-		userArrayList.get(i).setStatus(2);//2 means no using 
-		time[0]=minute;
-		int[] todayUsingTime=userArrayList.get(i).getDayUsingTime();
-		if(todayUsingTime[0]==now.get(Calendar.DAY_OF_YEAR)) {
-			todayUsingTime[1]+=minute;
-		}else
-			todayUsingTime[1]=minute;
+		int i = searchID(studentID);
+		int[] time = new int[2];
+		Calendar now = Calendar.getInstance();
+		Calendar last = userArrayList.get(i).getCld();
+		int minute = (now.get(Calendar.YEAR) - last.get(Calendar.YEAR)) * 525600
+				+ (now.get(Calendar.DAY_OF_YEAR) - last.get(Calendar.DAY_OF_YEAR));
+		userArrayList.get(i).setStatus(2);// 2 means no using
+		time[0] = minute;
+		int[] todayUsingTime = userArrayList.get(i).getDayUsingTime();
+		if (todayUsingTime[0] == now.get(Calendar.DAY_OF_YEAR)) {
+			todayUsingTime[1] += minute;
+		} else
+			todayUsingTime[1] = minute;
 		userArrayList.get(i).setDayUsingTime(now.get(Calendar.DAY_OF_YEAR), todayUsingTime[1]);
-		time[1]=todayUsingTime[1];
+		time[1] = todayUsingTime[1];
 		return time;
 	}
-	
+
 	public static void ban(String studentID) {
-		int i=searchID(studentID);
-		if(i>=0) {
+		int i = searchID(studentID);
+		if (i >= 0) {
 			userArrayList.get(i).setFine(true);
 			System.out.println("you are fined");
-		}else
+		} else
 			System.out.println("something wrong");
 	}
-	
+
 	public static boolean isCurrentUsing(String studentID) {
-		int i= searchID(studentID);
-		if (userArrayList.get(i).getStatus()==1) {
+		int i = searchID(studentID);
+		if (userArrayList.get(i).getStatus() == 1) {
 			return true;
-		}else
+		} else
 			return false;
 	}
-	
+
 	public static boolean isAbleToBorrow(String studentID) {
-		int i= searchID(studentID);
-		if (userArrayList.get(i).getStatus()==2 && userArrayList.get(i).isFine()==false) {
+		int i = searchID(studentID);
+		if (userArrayList.get(i).getStatus() == 2 && userArrayList.get(i).isFine() == false) {
 			return true;
-		}else
+		} else
 			return false;
 	}
-	
-	
+
 	public static void unBan(String studentID) {
-		int i=searchID(studentID);
-		if(i>=0) {
+		int i = searchID(studentID);
+		if (i >= 0) {
 			userArrayList.get(i).setFine(false);
-		}else
+		} else
 			System.out.println("something wrong");
 	}
 }
