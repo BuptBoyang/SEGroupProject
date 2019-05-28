@@ -49,7 +49,6 @@ public class UserControl {
 
 	public static void register(User user) {
 		userArrayList.add(user);
-		UserControl.write(user);
 		System.out.println(user);
 	}
 
@@ -75,14 +74,15 @@ public class UserControl {
 
 	}
 
-	public static void write(User user) {
+	public static void write() {
 		try {
 			File csv = new File("D:\\userList.csv");
-
 			BufferedWriter bw = new BufferedWriter(new FileWriter(csv, false));
-				bw.write(user.getStudentID() + "," + user.getName() + ","
-						+ user.getEmail() + "," + user.getStatus() + "," + user.isFine());
+			for(int i = 0; i<userArrayList.size(); i++) {
+				bw.write(userArrayList.get(i).getStudentID() + "," + userArrayList.get(i).getName() + ","
+						+ userArrayList.get(i).getEmail() + "," + userArrayList.get(i).getStatus() + "," + userArrayList.get(i).isFine());
 				bw.newLine();
+			}
 			bw.close();
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
