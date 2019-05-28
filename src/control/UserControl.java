@@ -61,7 +61,12 @@ public class UserControl {
 			while ((line = reader.readLine()) != null) {
 				String item[] = line.split(",");
 				User user = new User(item[0], item[1], item[2]);
+				int i= Integer.getInteger(item[3]);
+				user.setStatus(i);
+				boolean b = Boolean.getBoolean(item[4]);
+				user.setFine(b);
 				userArrayList.add(user);
+				
 			}
 			reader.close();
 		} catch (Exception e) {
@@ -74,9 +79,9 @@ public class UserControl {
 		try {
 			File csv = new File("D:\\userList.csv");
 
-			BufferedWriter bw = new BufferedWriter(new FileWriter(csv, true));
+			BufferedWriter bw = new BufferedWriter(new FileWriter(csv, false));
 				bw.write(user.getStudentID() + "," + user.getName() + ","
-						+ user.getEmail());
+						+ user.getEmail() + "," + user.getStatus() + "," + user.isFine());
 				bw.newLine();
 			bw.close();
 		} catch (FileNotFoundException e) {
@@ -109,21 +114,6 @@ public class UserControl {
 		}
 	}
 
-	public static void writeUsingTime(User user) {
-		try {
-			File csv = new File("C:\\Users\\lvxia\\Desktop\\UsingTime.csv");
-
-			BufferedWriter bw = new BufferedWriter(new FileWriter(csv, true));
-				bw.write(user.getStudentID() + "," + user.getDayUsingTime()[0] + "," + user.getDayUsingTime()[1]);
-				bw.newLine();
-			bw.close();
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-	}
-	
 	public static int[] usingTime(String studentID) {
 		int i = searchID(studentID);
 		int[] time = new int[2];
