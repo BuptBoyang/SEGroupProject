@@ -49,7 +49,6 @@ public class UserControl {
 
 	public static void register(User user) {
 		userArrayList.add(user);
-		UserControl.write(user);
 		System.out.println(user);
 	}
 
@@ -61,7 +60,12 @@ public class UserControl {
 			while ((line = reader.readLine()) != null) {
 				String item[] = line.split(",");
 				User user = new User(item[0], item[1], item[2]);
+				int i= Integer.getInteger(item[3]);
+				user.setStatus(i);
+				boolean b = Boolean.getBoolean(item[4]);
+				user.setFine(b);
 				userArrayList.add(user);
+				
 			}
 			reader.close();
 		} catch (Exception e) {
@@ -70,14 +74,15 @@ public class UserControl {
 
 	}
 
-	public static void write(User user) {
+	public static void write() {
 		try {
 			File csv = new File("D:\\userList.csv");
-
-			BufferedWriter bw = new BufferedWriter(new FileWriter(csv, true));
-				bw.write(user.getStudentID() + "," + user.getName() + ","
-						+ user.getEmail());
+			BufferedWriter bw = new BufferedWriter(new FileWriter(csv, false));
+			for(int i = 0; i<userArrayList.size(); i++) {
+				bw.write(userArrayList.get(i).getStudentID() + "," + userArrayList.get(i).getName() + ","
+						+ userArrayList.get(i).getEmail() + "," + userArrayList.get(i).getStatus() + "," + userArrayList.get(i).isFine());
 				bw.newLine();
+			}
 			bw.close();
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
@@ -109,21 +114,6 @@ public class UserControl {
 		}
 	}
 
-	public static void writeUsingTime(User user) {
-		try {
-			File csv = new File("C:\\Users\\lvxia\\Desktop\\UsingTime.csv");
-
-			BufferedWriter bw = new BufferedWriter(new FileWriter(csv, true));
-				bw.write(user.getStudentID() + "," + user.getDayUsingTime()[0] + "," + user.getDayUsingTime()[1]);
-				bw.newLine();
-			bw.close();
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-	}
-	
 	public static int[] usingTime(String studentID) {
 		int i = searchID(studentID);
 		int[] time = new int[2];
