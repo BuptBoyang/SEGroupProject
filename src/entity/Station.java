@@ -1,7 +1,5 @@
 package entity;
 
-import javax.swing.*;
-
 public class Station {
 	private Slot slot[];
 	private final int slotAmount = 8;
@@ -34,29 +32,12 @@ public class Station {
 	//	}
 	}
 	
-	public int findFreeSlot(boolean target) {
-		int slotNo = -1;
-		for(int i=0;i<slotAmount;i++) {
-			if(slot[i].isHasScooter()==target) {
-				slotNo = i;
-				break;
-			}
-		}
-		return slotNo;
-	}
-	
 	public void openSlot(int slotNo) {
 		slot[slotNo].setLocked(false);
 	}
 	
 	public void closeSlot(int slotNo) {
 		slot[slotNo].setLocked(true);
-	}
-
-	public void showSlotPosition(boolean target) {
-		JLabel pos = new JLabel();
-		int slotNo = findFreeSlot(target);
-		pos.setText(slotNo + " is able to use");
 	}
 	
 	public boolean checkToBorrow(int slotNo) {

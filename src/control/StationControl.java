@@ -73,6 +73,17 @@ public class StationControl {
         }  
 	}
 	
+	public static int findFreeSlot(int index,boolean target) {
+		int slotNo = -1;
+		for(int i=0;i<stations[index].getSlotAmount();i++) {
+			if(stations[index].getSlot(i).isHasScooter()==target) {
+				slotNo = i;
+				break;
+			}
+		}
+		return slotNo;
+	}
+	
 	public static String scanCard(String studentID,int index) {
 		String message = new String();
 		if(UserControl.isCurrentUsing(studentID)==true) {
@@ -91,7 +102,7 @@ public class StationControl {
 	}
 
 	private static String userReturnScooter(String studentID,int index) {
-		int slotNo = stations[index].findFreeSlot(false);
+		int slotNo = findFreeSlot(index,false);
 		if(slotNo==-1) {
 			return "No free slot";
 		}
@@ -111,7 +122,7 @@ public class StationControl {
 	}
 
 	public static String userTakeScooter(String studentID,int index) {
-		int slotNo = stations[index].findFreeSlot(true);
+		int slotNo = findFreeSlot(index,true);
 		if(slotNo==-1) {
 			return "No free slot";
 		}
