@@ -1,24 +1,17 @@
 package entity;
 
-import javax.swing.*;
+import java.io.Serializable;
 
-import java.awt.Color;
-import java.awt.event.*;
-
-public class Slot {
+public class Slot implements Serializable{
 	private boolean hasScooter;
 	private boolean isLocked;
-	private JLabel light;
-	private JButton button;
-	boolean success;//是否成功关锁，在actionPerform里置为true
+	private int index;
+	boolean isUserActionDone;
 	
 	public Slot(boolean hasScooter,int index) {
 		this.hasScooter = hasScooter;
+		this.index = index;
 		this.isLocked = true;
-		this.light = new JLabel();
-		this.button = new JButton(""+index);
-		light.setOpaque(true);
-		light.setBackground(Color.WHITE);
 	}
 	
 	public boolean isHasScooter() {
@@ -32,5 +25,11 @@ public class Slot {
 	}
 	public void setLocked(boolean isLocked) {
 		this.isLocked = isLocked;
+	}
+	public int getIndex() {
+		return this.index;
+	}
+	public void setIndex(int index) {
+		this.index = index;
 	}
 }

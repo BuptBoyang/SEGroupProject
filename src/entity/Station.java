@@ -1,19 +1,12 @@
 package entity;
 
-public class Station {
+import java.io.Serializable;
+
+public class Station implements Serializable{
 	private Slot slot[];
 	private final int slotAmount = 8;
-	//private JPanel stationPanel;
 	private boolean isTimeout = false;
 
-	public int getSlotAmount() {
-		return slotAmount;
-	}
-	
-	public Slot getSlot(int i) {
-		return slot[i];
-	}
-	
 	public Station() {
 		this.slot = new Slot[slotAmount];
 		for(int i=0;i<slotAmount;i++) {
@@ -25,11 +18,17 @@ public class Station {
 		}
 	}
 	
+	public Slot getSlot(int i) {
+		return slot[i];
+	}
+
+	public int getSlotAmount() {
+		return slotAmount;
+	}
+	
+	
 	public void pressSimulator(int slotNo) {
-	//	Scanner sc = new Scanner( System.in );
-		//if(sc.next()=="1") {
-			slot[slotNo].success=true;
-	//	}
+		slot[slotNo].isUserActionDone=true;
 	}
 	
 	public void openSlot(int slotNo) {
@@ -43,7 +42,7 @@ public class Station {
 	public boolean checkToBorrow(int slotNo) {
 		boolean borrowResult = false;
 		while(isTimeout==false) {
-			if(slot[slotNo].success==true) {
+			if(slot[slotNo].isUserActionDone==true) {
 				borrowResult = true;
 				break;
 			}
@@ -55,7 +54,7 @@ public class Station {
 	public boolean checkToReturn(int slotNo) {
 		boolean returnResult = false;
 		while(isTimeout==false) {
-			if(slot[slotNo].success==true) {
+			if(slot[slotNo].isUserActionDone==true) {
 				returnResult = true;
 				break;
 			}
@@ -65,7 +64,7 @@ public class Station {
 	}
 	
 	public void reset(int slotNo,boolean hasScooter) {
-		slot[slotNo].success = false;
+		slot[slotNo].isUserActionDone = false;
 		slot[slotNo].setHasScooter(hasScooter);
 		closeSlot(slotNo);
 	}
@@ -80,7 +79,7 @@ public class Station {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
-				if(slot[slotNo].success==false && slot[slotNo].isLocked()==false) {
+				if(slot[slotNo].isUserActionDone==false && slot[slotNo].isLocked()==false) {
 					System.out.println("Timeout");
 					slot[slotNo].setLocked(true);
 					isTimeout = true;
