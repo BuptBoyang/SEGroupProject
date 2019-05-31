@@ -82,6 +82,11 @@ public class StationPage extends JFrame {
 			station[i].add(btnSubmit[i]);
 			
 			btnBack[i].setBounds(719, 125, 93, 23);
+			btnBack[i].addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					dispose();
+				}
+			});
 			station[i].add(btnBack[i]);
 
 			for (int j = 0; j < slotAmount; j++) {
