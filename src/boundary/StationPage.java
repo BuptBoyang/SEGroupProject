@@ -265,7 +265,7 @@ public class StationPage extends JFrame {
 				light.setVisible(true);
 
 				times++;
-				if (times == 5) {
+				if (times == 60) {
 					status = false;
 					timeout = true;//60s timer
 				}
