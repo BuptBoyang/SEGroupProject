@@ -12,7 +12,7 @@ public class User {
 	private int[] dayUsingTime;
 	private boolean fine;
 
-	public User(String id, String name, String email) {
+	public User(String id, String email, String name) {
 		this.email = email;
 		this.name = name;
 		this.studentID = id;

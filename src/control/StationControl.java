@@ -1,154 +1,135 @@
 
 package control;
 
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
+import java.util.ArrayList;
 
 import entity.Station;
 
-public class StationControl {	
+public class StationControl {
 
-	private static Station[] stations = {
-			new Station(),
-			new Station(),
-			new Station()
-	};
-	
-	public static void saveStation() {
-		ObjectOutputStream oos = null;  
-        FileOutputStream fos = null;
+	public static boolean success = false;
+
+	public static ArrayList<Station> stationArrayList = new ArrayList<Station>();
+
+	public static void write() {
 		try {
-			File f = new File("station");
-			fos = new FileOutputStream(f);  
-            oos = new ObjectOutputStream(fos);  
-            oos.writeObject(stations);
+			File csv = new File("stationList.csv");
+			BufferedWriter bw = new BufferedWriter(new FileWriter(csv, false));
+			for (int i = 0; i < stationArrayList.size(); i++) {
+				for (int j = 0; j < Station.getSlotAmount(); j++) {
+					bw.write(stationArrayList.get(i).getSlot(j).isHasScooter() + ",");
+				}
+				bw.newLine();
+			}
+			bw.close();
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
+	public static void read() {
+		try {
+			BufferedReader reader = new BufferedReader(new FileReader("stationList.csv"));
+//			reader.readLine();
+			String line = null;
+			while ((line = reader.readLine()) != null) {
+				String item[] = line.split(",");
+				Station station = new Station();
+				for (int j = 0; j < Station.getSlotAmount(); j++) {
+					boolean b = Boolean.parseBoolean(item[j]);
+					station.getSlot(j).setHasScooter(b);
+				}
+				stationArrayList.add(station);
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
-		} finally {  
-            if (oos != null) {  
-                try {  
-                    oos.close();  
-                } catch (IOException e1) {  
-                    e1.printStackTrace();  
-                }  
-            }  
-            if (fos != null) {  
-                try {  
-                    fos.close();  
-                } catch (IOException e2) {  
-                    e2.printStackTrace();  
-                }  
-            }  
-        }  
+		}
 	}
-	
-	public static void read(){
-		FileInputStream fis = null;  
-        ObjectInputStream ois = null; 
-		try {
-			fis = new FileInputStream("station");  
-            ois = new ObjectInputStream(fis);
-            stations =  (Station[]) ois.readObject();  
-		} catch (Exception e) {
-			e.printStackTrace();
-		} finally {  
-            if (fis != null) {  
-                try {  
-                    fis.close();  
-                } catch (IOException e1) {  
-                    e1.printStackTrace();  
-                }  
-            }  
-            if (ois != null) {  
-                try {  
-                    ois.close();  
-                } catch (IOException e2) {  
-                    e2.printStackTrace();  
-                }  
-            }  
-        }  
-	}
-	
-	public static int findFreeSlot(int index,boolean target) {
+
+	public static int findFreeSlot(int index) {
 		int slotNo = -1;
-		for(int i=0;i<stations[index].getSlotAmount();i++) {
-			if(stations[index].getSlot(i).isHasScooter()==target) {
+		for (int i = 0; i < Station.getSlotAmount(); i++) {
+			if (stationArrayList.get(index).getSlot(i).isHasScooter() == false) {
 				slotNo = i;
 				break;
 			}
 		}
 		return slotNo;
 	}
-	
-	public static String scanCard(String studentID,int index) {
-		String message = new String();
-		if(UserControl.isCurrentUsing(studentID)==true) {
-			message += "please return\n";
-			message += userReturnScooter(studentID,index);
-		} 
-		else if (UserControl.isAbleToBorrow(studentID)==true) {
-			message += "please take\n";
-			message += userTakeScooter(studentID,index);
+
+	public static int findFreeScooter(int index) {
+		int slotNo = -1;
+		for (int i = 0; i < Station.getSlotAmount(); i++) {
+			if (stationArrayList.get(index).getSlot(i).isHasScooter() == true) {
+				slotNo = i;
+				break;
+			}
 		}
-		else if(UserControl.isAbleToBorrow(studentID)==false) {
-			message += "Pay your fine in the office before using a scooter";
-		}
-		
-		return message;
+		return slotNo;
 	}
 
-	private static String userReturnScooter(String studentID,int index) {
-		int slotNo = findFreeSlot(index,false);
-		if(slotNo==-1) {
-			return "No free slot";
-		}
-		String message = new String();
-		stations[index].releaseSlot(slotNo);
-		stations[index].pressSimulator(slotNo);
-		stations[index].timeout(slotNo);
-		if(stations[index].checkToReturn(slotNo)==true) {
-			UserControl.endUsing(studentID);
-			stations[index].reset(slotNo,true);
-			message = "Return the scooter successfully";
+	public static int scanCard(String studentID) {
+		if (UserControl.isCurrentUsing(studentID) == true) {
+			return 1;// want to return a scooter
+		} else if (UserControl.isAbleToBorrow(studentID) == true) {
+			return 2; // borrow
 		} else {
-			stations[index].reset(slotNo,false);
-			message = "Retrun the scooter unsuccessfully";
+			return 3;// fire
 		}
-		return message;
 	}
 
-	public static String userTakeScooter(String studentID,int index) {
-		int slotNo = findFreeSlot(index,true);
-		if(slotNo==-1) {
-			return "No free slot";
-		}
-		String message = new String();
-		stations[index].releaseSlot(slotNo);
-		stations[index].pressSimulator(slotNo);
-		stations[index].timeout(slotNo);
-		if(stations[index].checkToBorrow(slotNo)==true) {
-			UserControl.startUsing(studentID);
-			stations[index].reset(slotNo,false);
-			message = "Take the scooter successfully";
+	public static void userTakeScooter(int index) {
+		int s = findFreeScooter(index);
+		if (s == -1) {
+			System.out.print("no spare scooter");
 		} else {
-			stations[index].reset(slotNo,true);
-			message = "Take the scooter unsuccessfully";
+			stationArrayList.get(index).getSlot(s).setLocked(false);
 		}
-		return message;
 	}
-	
+
+	public static void userReturnSccoter(int index) {
+		int s = findFreeSlot(index);
+		if (s == -1) {
+			System.out.print("no spare slot");
+		} else {
+			stationArrayList.get(index).getSlot(s).setLocked(false);
+		}
+	}
+
+	public static boolean isSuccess() {
+		return success;
+	}
+
+	public static void setSuccess(boolean success) {
+		StationControl.success = success;
+	}
+
+	public static void reSetAfterBorrow(int index, int i) {
+			stationArrayList.get(index).getSlot(i).setHasScooter(false);
+			stationArrayList.get(index).getSlot(i).setLocked(true);
+	}
+
+	public static void reSetAfterReturn(int index, int i) {
+			stationArrayList.get(index).getSlot(i).setHasScooter(true);
+			stationArrayList.get(index).getSlot(i).setLocked(true);
+	}
+
 	public static int scooterNumberInStation(int index) {
 		int amount = 0;
-			for(int i=0;i<stations[index].getSlotAmount();i++) {
-				if(stations[index].getSlot(i).isHasScooter()) {
-					amount++;
-				}
+		for (int i = 0; i < Station.getSlotAmount(); i++) {
+			if (stationArrayList.get(index).getSlot(i).isHasScooter()) {
+				amount++;
 			}
+		}
 		return amount;
 	}
-	
 }

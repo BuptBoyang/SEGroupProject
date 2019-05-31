@@ -41,7 +41,6 @@ public class UserControl {
 
 	public static boolean isDuplication(String id) {
 		for (int i = 0; i < userArrayList.size(); i++) {
-
 			if (userArrayList.get(i).getStudentID().equals(id)) {
 				return true;
 			}
@@ -56,15 +55,15 @@ public class UserControl {
 
 	public static void read() {
 		try {
-			BufferedReader reader = new BufferedReader(new FileReader("D:\\userList.csv"));
-			reader.readLine();
+			BufferedReader reader = new BufferedReader(new FileReader("userList.csv"));
+//			reader.readLine();
 			String line = null;
 			while ((line = reader.readLine()) != null) {
 				String item[] = line.split(",");
 				User user = new User(item[0], item[1], item[2]);
-				int i = Integer.getInteger(item[3]);
+				int i = Integer.parseInt(item[3]);
 				user.setStatus(i);
-				boolean b = Boolean.getBoolean(item[4]);
+				boolean b = Boolean.parseBoolean(item[4]);
 				user.setFine(b);
 				userArrayList.add(user);
 
@@ -78,7 +77,7 @@ public class UserControl {
 
 	public static void write() {
 		try {
-			File csv = new File("D:\\userList.csv");
+			File csv = new File("userList.csv");
 			BufferedWriter bw = new BufferedWriter(new FileWriter(csv, false));
 			for (int i = 0; i < userArrayList.size(); i++) {
 				bw.write(userArrayList.get(i).getStudentID() + "," + userArrayList.get(i).getName() + ","
@@ -111,6 +110,7 @@ public class UserControl {
 	}
 
 	public static void endUsing(String studentID) {
+	
 		int[] time = usingTime(studentID);
 		if (time[0] > 30 || time[1] > 120) {
 			ban(studentID);
@@ -125,19 +125,12 @@ public class UserControl {
 		Calendar last = userArrayList.get(i).getCld();
 		int minute = (now.get(Calendar.YEAR) - last.get(Calendar.YEAR)) * 525600
 				+ (now.get(Calendar.DAY_OF_YEAR) - last.get(Calendar.DAY_OF_YEAR));
+		
 		userArrayList.get(i).setStatus(2);// 2 means no using
+
 		time[0] = minute;
 		time[1] = minute;
-		for (int j = 0; i < UsageControl.usageArrayList.size(); j++) {
-			if (studentID == UsageControl.usageArrayList.get(j).getStudentID()
-					&& day == UsageControl.usageArrayList.get(i).getDate()) {
-				time[1] = minute + UsageControl.usageArrayList.get(i).getDayUsage();
-				UsageControl.usageArrayList.get(i).setDayUsage(time[1]);
-				return time;
-			}
-		}
-		Usage usage = new Usage(studentID, day, minute);
-		UsageControl.usageArrayList.add(usage);
+		UsageControl.updateUsage(studentID, day, minute);
 		return time;
 	}
 

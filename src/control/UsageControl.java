@@ -17,13 +17,13 @@ public class UsageControl {
 
 	public static void updateUsage(String studentID, int date, int time) {
 		for (int i = 0; i < usageArrayList.size(); i++) {
-			if (usageArrayList.get(i).getStudentID().equals(studentID)) {
-				if (usageArrayList.get(i).getDate() == date) {
-					usageArrayList.get(i).setDayUsage(time);
-				} else {
-					Usage usage = new Usage(studentID, date, time);
-					usageArrayList.add(usage);
-				}
+			if ((usageArrayList.get(i).getStudentID().equals(studentID)) && (usageArrayList.get(i).getDate() == date)) {
+				usageArrayList.get(i).setDayUsage(time);
+				break;
+			} else {
+				Usage usage = new Usage(studentID, date, time);
+				usageArrayList.add(usage);
+				break;
 			}
 		}
 	}
@@ -49,8 +49,8 @@ public class UsageControl {
 
 	public static void read() {
 		try {
-			BufferedReader reader = new BufferedReader(new FileReader("C:\\Users\\lenovo\\Desktop\\usage.csv"));
-			reader.readLine();
+			BufferedReader reader = new BufferedReader(new FileReader("usage.csv"));
+//			reader.readLine();
 			String line = null;
 			while ((line = reader.readLine()) != null) {
 				String item[] = line.split(",");
@@ -64,13 +64,16 @@ public class UsageControl {
 
 	}
 
-	public static void write(Usage usage) {
+	public static void write() {
 		try {
-			File csv = new File("C:\\Users\\lenovo\\Desktop\\usage.csv");
+			File csv = new File("usage.csv");
 
-			BufferedWriter bw = new BufferedWriter(new FileWriter(csv, true));
-			bw.write(usage.getStudentID() + "," + usage.getDate() + "," + usage.getDayUsage());
-			bw.newLine();
+			BufferedWriter bw = new BufferedWriter(new FileWriter(csv, false));
+			for (int i = 0; i < usageArrayList.size(); i++) {
+				bw.write(usageArrayList.get(i).getStudentID() + "," + usageArrayList.get(i).getDate() + ","
+						+ usageArrayList.get(i).getDayUsage());
+				bw.newLine();
+			}
 			bw.close();
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();

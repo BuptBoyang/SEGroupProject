@@ -1,9 +1,9 @@
 package entity;
 
 public class Usage {
-	private  String studentID;
-	private  int date;
-	private  int dayUsage;
+	private String studentID;
+	private int date;
+	private int dayUsage;
 	
 	public Usage(String studentID, int date, int dayUsage) {
 		this.studentID = studentID;
@@ -14,7 +14,7 @@ public class Usage {
 	/**
 	 * @return the studentID
 	 */
-	public  String  getStudentID() {
+	public String getStudentID() {
 		return studentID;
 	}
 
@@ -28,14 +28,14 @@ public class Usage {
 	/**
 	 * @return the date
 	 */
-	public  int getDate() {
+	public int getDate() {
 		return date;
 	}
 
 	/**
 	 * @param date the date to set
 	 */
-	public  void setDate(int date) {
+	public void setDate(int date) {
 		this.date = date;
 	}
 
